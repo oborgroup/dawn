@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -16,8 +25,6 @@
     },
     "categories": {
       "type": "collection-list",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "title": "Shop by category",
         "heading_size": "h1",
@@ -25,8 +32,8 @@
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "show_view_all": true,
-        "swipe_on_mobile": true,
         "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "padding_top": 52,
         "padding_bottom": 28
       }
@@ -34,20 +41,19 @@
     "new_arrivals": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "New arrivals",
         "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": true,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": true,
-        "swipe_on_mobile": true,
+        "color_scheme": "scheme-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -55,6 +61,7 @@
         "show_rating": false,
         "quick_add": "standard",
         "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "padding_top": 28,
         "padding_bottom": 36
       }
@@ -85,18 +92,22 @@
           }
         }
       },
-      "block_order": ["heading", "text", "button"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "height": "medium",
         "desktop_image_width": "medium",
         "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
+        "mobile_content_alignment": "left",
         "section_color_scheme": "scheme-2",
         "color_scheme": "scheme-1",
-        "mobile_content_alignment": "left",
-        "image_behavior": "none",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -121,14 +132,24 @@
           "settings": {}
         }
       },
-      "block_order": ["heading", "paragraph", "email_form"],
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
       "settings": {
-        "full_width": true,
         "color_scheme": "scheme-3",
+        "full_width": true,
         "padding_top": 56,
         "padding_bottom": 56
       }
     }
   },
-  "order": ["hero", "categories", "new_arrivals", "promo", "newsletter"]
+  "order": [
+    "hero",
+    "categories",
+    "new_arrivals",
+    "promo",
+    "newsletter"
+  ]
 }
