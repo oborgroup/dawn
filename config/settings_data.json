@@ -11,6 +11,90 @@
   "current": {
     "logo": "shopify://shop_images/z-global-logo.svg",
     "favicon": "shopify://shop_images/favicon.png",
+    "logo_width": 185,
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FFFFFF",
+          "background_gradient": "",
+          "text": "#0D2B5E",
+          "button": "#0D2B5E",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#0D2B5E",
+          "shadow": "#0D2B5E"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#F5F7FB",
+          "background_gradient": "",
+          "text": "#0D2B5E",
+          "button": "#0D2B5E",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#0D2B5E",
+          "shadow": "#0D2B5E"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#0D2B5E",
+          "background_gradient": "",
+          "text": "#FFFFFF",
+          "button": "#C49A3A",
+          "button_label": "#0D2B5E",
+          "secondary_button_label": "#FFFFFF",
+          "shadow": "#061634"
+        }
+      },
+      "scheme-4": {
+        "settings": {
+          "background": "#C49A3A",
+          "background_gradient": "",
+          "text": "#0D2B5E",
+          "button": "#0D2B5E",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#0D2B5E",
+          "shadow": "#0D2B5E"
+        }
+      },
+      "scheme-5": {
+        "settings": {
+          "background": "#0A1F44",
+          "background_gradient": "",
+          "text": "#FFFFFF",
+          "button": "#C49A3A",
+          "button_label": "#0D2B5E",
+          "secondary_button_label": "#FFFFFF",
+          "shadow": "#061634"
+        }
+      }
+    },
+    "type_header_font": "poppins_n6",
+    "heading_scale": 110,
+    "type_body_font": "assistant_n4",
+    "body_scale": 100,
+    "page_width": 1400,
+    "buttons_radius": 6,
+    "inputs_radius": 6,
+    "card_style": "card",
+    "card_color_scheme": "scheme-1",
+    "card_corner_radius": 12,
+    "card_shadow_opacity": 10,
+    "card_shadow_vertical_offset": 6,
+    "card_shadow_blur": 16,
+    "collection_card_style": "card",
+    "collection_card_color_scheme": "scheme-3",
+    "collection_card_corner_radius": 12,
+    "collection_card_shadow_opacity": 12,
+    "collection_card_shadow_vertical_offset": 6,
+    "collection_card_shadow_blur": 16,
+    "media_radius": 12,
+    "badge_corner_radius": 40,
+    "sale_badge_color_scheme": "scheme-4",
+    "sold_out_badge_color_scheme": "scheme-2",
+    "predictive_search_show_vendor": true,
+    "predictive_search_show_price": true,
+    "cart_type": "drawer",
     "content_for_index": []
   }
 }

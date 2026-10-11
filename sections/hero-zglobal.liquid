@@ -4,26 +4,25 @@
     assign btn1_link = routes.all_products_collection_url
   endif
   assign btn2_link = section.settings.button_link_2
+
+  if section.settings.image != blank
+    assign bg_url = section.settings.image | image_url: width: 2400
+  else
+    assign bg_url = 'hero-bg.jpg' | asset_url
+  endif
 -%}
 
 {%- style -%}
   #zgHero-{{ section.id }} {
     position: relative;
     overflow: hidden;
-    background:
-      radial-gradient(1200px 600px at 85% -10%, rgba(196,154,58,0.28), transparent 60%),
-      radial-gradient(900px 500px at 10% 120%, rgba(196,154,58,0.10), transparent 55%),
-      linear-gradient(135deg, #0A1F44 0%, #0D2B5E 55%, #123A7A 100%);
+    background-color: #0D2B5E;
+    background-image:
+      linear-gradient(to right, rgba(6,18,46,0.70) 0%, rgba(10,31,68,0.45) 45%, rgba(10,31,68,0.30) 100%),
+      url('{{ bg_url }}');
+    background-size: cover;
+    background-position: center;
     color: #FFFFFF;
-  }
-  #zgHero-{{ section.id }}::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
-    background-size: 22px 22px;
-    opacity: 0.5;
-    pointer-events: none;
   }
   #zgHero-{{ section.id }} .zgHero__inner {
     position: relative;
@@ -119,6 +118,7 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Optional. Leave empty to use the built-in ZGlobal gradient banner." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "ZGlobal Store" },
     { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Beauty, outdoor & home — delivered" },
     { "type": "text", "id": "text", "label": "Subheading", "default": "Shop trusted brands at everyday prices. Fast shipping across Europe." },
