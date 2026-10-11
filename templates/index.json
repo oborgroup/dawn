@@ -1,46 +1,17 @@
 {
   "sections": {
     "hero": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Beauty, outdoor & home — delivered",
-            "heading_size": "h0"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Shop trusted brands at everyday prices. Fast shipping across Europe.</p>",
-            "text_style": "body"
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop new arrivals",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": false,
-            "button_label_2": "Browse all",
-            "button_link_2": "shopify://collections/all",
-            "button_style_secondary_2": true
-          }
-        }
-      },
-      "block_order": ["heading", "text", "buttons"],
+      "type": "hero-zglobal",
       "settings": {
-        "image_overlay_opacity": 45,
-        "image_height": "large",
-        "desktop_content_position": "middle-center",
-        "show_text_box": false,
-        "image_behavior": "ambient",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": true,
-        "show_text_below": false
+        "eyebrow": "ZGlobal Store",
+        "heading": "Beauty, outdoor & home — delivered",
+        "text": "Shop trusted brands at everyday prices. Fast shipping across Europe.",
+        "padding_vertical": 130,
+        "alignment": "center",
+        "button_label_1": "Shop new arrivals",
+        "button_link_1": "shopify://collections/all",
+        "button_label_2": "Browse all",
+        "button_link_2": "shopify://collections/all"
       }
     },
     "categories": {
