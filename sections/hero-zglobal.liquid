@@ -4,6 +4,14 @@
     assign btn1_link = routes.all_products_collection_url
   endif
   assign btn2_link = section.settings.button_link_2
+  if btn2_link == blank
+    assign btn2_link = routes.all_products_collection_url
+  endif
+  assign hero_eyebrow = section.settings.eyebrow | default: 'ZGlobal Store'
+  assign hero_heading = section.settings.heading | default: 'Beauty, outdoor & home — delivered'
+  assign hero_text = section.settings.text | default: 'Shop trusted brands at everyday prices. Fast shipping across Europe.'
+  assign hero_btn1 = section.settings.button_label_1 | default: 'Shop new arrivals'
+  assign hero_btn2 = section.settings.button_label_2 | default: 'Browse all'
   assign has_image = false
   if section.settings.image != blank
     assign has_image = true
@@ -118,19 +126,13 @@
 <section id="zgHero-{{ section.id }}" class="zgHero">
   <div class="zgHero__inner">
     <div class="zgHero__content">
-      {%- if section.settings.eyebrow != blank -%}<p class="zgHero__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      {%- if section.settings.heading != blank -%}<h1 class="zgHero__title">{{ section.settings.heading }}</h1>{%- endif -%}
-      {%- if section.settings.text != blank -%}<p class="zgHero__text">{{ section.settings.text }}</p>{%- endif -%}
-      {%- if section.settings.button_label_1 != blank or section.settings.button_label_2 != blank -%}
-        <div class="zgHero__buttons">
-          {%- if section.settings.button_label_1 != blank -%}
-            <a class="zgHero__btn zgHero__btn--primary" href="{{ btn1_link }}">{{ section.settings.button_label_1 }}</a>
-          {%- endif -%}
-          {%- if section.settings.button_label_2 != blank and btn2_link != blank -%}
-            <a class="zgHero__btn zgHero__btn--secondary" href="{{ btn2_link }}">{{ section.settings.button_label_2 }}</a>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
+      <p class="zgHero__eyebrow">{{ hero_eyebrow }}</p>
+      <h1 class="zgHero__title">{{ hero_heading }}</h1>
+      <p class="zgHero__text">{{ hero_text }}</p>
+      <div class="zgHero__buttons">
+        <a class="zgHero__btn zgHero__btn--primary" href="{{ btn1_link }}">{{ hero_btn1 }}</a>
+        <a class="zgHero__btn zgHero__btn--secondary" href="{{ btn2_link }}">{{ hero_btn2 }}</a>
+      </div>
     </div>
     <div class="zgHero__visual" aria-hidden="true">
       <div class="zgHero__globe">

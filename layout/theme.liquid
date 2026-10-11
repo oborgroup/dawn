@@ -279,8 +279,60 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'zglobal-custom.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    {%- style -%}
+      /* ZGlobal brand palette — inlined so it always loads, independent of
+         settings_data color schemes (which Shopify keeps resetting). RGB
+         triplets match Dawn's rgb(var(--color-...)) usage. */
+      :root, .color-scheme-1 {
+        --color-background: 255,255,255; --gradient-background: #FFFFFF;
+        --color-foreground: 13,43,94; --color-background-contrast: 204,208,214;
+        --color-shadow: 13,43,94; --color-button: 13,43,94; --color-button-text: 255,255,255;
+        --color-secondary-button: 255,255,255; --color-secondary-button-text: 13,43,94;
+        --color-link: 13,43,94; --color-badge-foreground: 13,43,94;
+        --color-badge-background: 255,255,255; --color-badge-border: 13,43,94;
+      }
+      .color-scheme-2 {
+        --color-background: 245,247,251; --gradient-background: #F5F7FB;
+        --color-foreground: 13,43,94; --color-background-contrast: 214,218,224;
+        --color-shadow: 13,43,94; --color-button: 13,43,94; --color-button-text: 255,255,255;
+        --color-secondary-button: 245,247,251; --color-secondary-button-text: 13,43,94;
+        --color-link: 13,43,94; --color-badge-foreground: 13,43,94;
+        --color-badge-background: 245,247,251; --color-badge-border: 13,43,94;
+      }
+      .color-scheme-3 {
+        --color-background: 13,43,94; --gradient-background: #0D2B5E;
+        --color-foreground: 255,255,255; --color-background-contrast: 30,62,110;
+        --color-shadow: 6,22,52; --color-button: 196,154,58; --color-button-text: 13,43,94;
+        --color-secondary-button: 13,43,94; --color-secondary-button-text: 255,255,255;
+        --color-link: 255,255,255; --color-badge-foreground: 255,255,255;
+        --color-badge-background: 13,43,94; --color-badge-border: 255,255,255;
+      }
+      .color-scheme-4 {
+        --color-background: 196,154,58; --gradient-background: #C49A3A;
+        --color-foreground: 13,43,94; --color-background-contrast: 160,126,47;
+        --color-shadow: 13,43,94; --color-button: 13,43,94; --color-button-text: 255,255,255;
+        --color-secondary-button: 196,154,58; --color-secondary-button-text: 13,43,94;
+        --color-link: 13,43,94; --color-badge-foreground: 13,43,94;
+        --color-badge-background: 196,154,58; --color-badge-border: 13,43,94;
+      }
+      .color-scheme-5 {
+        --color-background: 10,31,68; --gradient-background: #0A1F44;
+        --color-foreground: 255,255,255; --color-background-contrast: 24,46,92;
+        --color-shadow: 6,22,52; --color-button: 196,154,58; --color-button-text: 13,43,94;
+        --color-secondary-button: 10,31,68; --color-secondary-button-text: 255,255,255;
+        --color-link: 255,255,255; --color-badge-foreground: 255,255,255;
+        --color-badge-background: 10,31,68; --color-badge-border: 255,255,255;
+      }
+      body { background-color: rgb(var(--color-background)); color: rgba(var(--color-foreground), 0.75); }
+      /* Force navy header + visible white logo regardless of scheme resolution */
+      .header-wrapper { background-color: #0D2B5E !important; color: #FFFFFF; }
+      .header-wrapper .header__heading-logo { filter: brightness(0) invert(1); }
+      .header-wrapper a, .header-wrapper .header__menu-item,
+      .header-wrapper .header__icon, .header-wrapper .header__icon .icon { color: #FFFFFF !important; }
+      .header-wrapper .header__icon .icon { stroke: #FFFFFF; }
+    {%- endstyle -%}
 
     {%- if settings.cart_type == 'drawer' -%}
       {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
