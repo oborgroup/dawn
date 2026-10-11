@@ -1,0 +1,8 @@
+/* ZGlobal custom overrides (kept separate from theme core) */
+
+/* Navy header: force the dark logo to render white so it stays visible.
+   Works for a monochrome (black/dark) logo mark. If the logo is ever
+   replaced with a full-colour one, remove this rule. */
+.header__heading-logo {
+  filter: brightness(0) invert(1);
+}
