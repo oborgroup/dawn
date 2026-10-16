@@ -2,53 +2,92 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
+    "zg_header": {
+      "type": "zg-header",
       "settings": {
-        "color_scheme": "scheme-5",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
+        "topbar_text": "Fast shipping across the EU · Genuine brands · Secure checkout",
+        "logo_white": true,
+        "search_placeholder": "Search products and brands"
       },
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
+        "nav_beauty": {
+          "type": "nav_link",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-5",
-            "link": ""
+            "label": "Beauty & Cosmetics",
+            "collection": "beauty",
+            "accent": false
+          }
+        },
+        "nav_sport": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Sport & Outdoor",
+            "collection": "sport",
+            "accent": false
+          }
+        },
+        "nav_home": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Home & Living",
+            "collection": "home",
+            "accent": false
+          }
+        },
+        "nav_sheglam": {
+          "type": "nav_link",
+          "settings": {
+            "label": "SHEGLAM",
+            "collection": "sheglam",
+            "accent": false
+          }
+        },
+        "nav_om": {
+          "type": "nav_link",
+          "settings": {
+            "label": "OutdoorMaster",
+            "collection": "outdoormaster",
+            "accent": false
+          }
+        },
+        "nav_vh": {
+          "type": "nav_link",
+          "settings": {
+            "label": "Vakume Home",
+            "collection": "vakumehome",
+            "accent": false
+          }
+        },
+        "nav_rk": {
+          "type": "nav_link",
+          "settings": {
+            "label": "RedKey",
+            "collection": "redkey",
+            "accent": false
+          }
+        },
+        "nav_all": {
+          "type": "nav_link",
+          "settings": {
+            "label": "All products",
+            "collection": "all",
+            "accent": true
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "nav_beauty",
+        "nav_sport",
+        "nav_home",
+        "nav_sheglam",
+        "nav_om",
+        "nav_vh",
+        "nav_rk",
+        "nav_all"
       ]
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "color_scheme": "scheme-3",
-        "menu_color_scheme": "scheme-3",
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
     }
   },
   "order": [
-    "announcement-bar",
-    "header"
+    "zg_header"
   ]
 }

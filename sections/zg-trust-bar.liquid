@@ -1,0 +1,83 @@
+{%- comment -%}
+  Row of reassurance points (shipping, checkout, returns, support).
+  All text is editable — keep claims accurate to your store policies.
+{%- endcomment -%}
+
+{%- style -%}
+  #zgT-{{ section.id }} { background: #EAEDF1; padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px; }
+  #zgT-{{ section.id }} .zgT__inner { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; background: #fff; display: grid; grid-template-columns: repeat({{ section.blocks.size | at_least: 1 }}, minmax(0, 1fr)); }
+  #zgT-{{ section.id }} .zgT__item { display: flex; align-items: center; gap: 1.2rem; padding: 2rem; border-right: 1px solid #E3E6EA; }
+  #zgT-{{ section.id }} .zgT__item:last-child { border-right: 0; }
+  #zgT-{{ section.id }} .zgT__icon { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%; background: #0D2B5E; color: #C49A3A; display: flex; align-items: center; justify-content: center; }
+  #zgT-{{ section.id }} .zgT__icon svg { width: 22px; height: 22px; }
+  #zgT-{{ section.id }} .zgT__title { display: block; font-weight: 700; color: #0F1111; font-size: 1.5rem; }
+  #zgT-{{ section.id }} .zgT__text { display: block; color: #565959; font-size: 1.3rem; margin-top: 0.2rem; }
+  @media screen and (max-width: 989px) {
+    #zgT-{{ section.id }} .zgT__inner { grid-template-columns: 1fr 1fr; }
+    #zgT-{{ section.id }} .zgT__item { border-bottom: 1px solid #E3E6EA; }
+  }
+  @media screen and (max-width: 749px) {
+    #zgT-{{ section.id }} { padding-left: 0.8rem; padding-right: 0.8rem; }
+    #zgT-{{ section.id }} .zgT__item { padding: 1.4rem 1.2rem; }
+  }
+{%- endstyle -%}
+
+<div id="zgT-{{ section.id }}" class="zgT">
+  <div class="zgT__inner">
+    {%- for block in section.blocks -%}
+      <div class="zgT__item" {{ block.shopify_attributes }}>
+        <span class="zgT__icon" aria-hidden="true">
+          {%- case block.settings.icon -%}
+            {%- when 'truck' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4h14v12H1zM15 9h4l4 4v3h-8z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+            {%- when 'lock' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            {%- when 'return' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+            {%- when 'badge' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          {%- endcase -%}
+        </span>
+        <span>
+          <span class="zgT__title">{{ block.settings.title }}</span>
+          {%- if block.settings.text != blank -%}<span class="zgT__text">{{ block.settings.text }}</span>{%- endif -%}
+        </span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ZGlobal trust bar",
+  "class": "section",
+  "settings": [
+    { "type": "range", "id": "padding_top", "label": "Top spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Point",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Shipping" },
+            { "value": "lock", "label": "Secure" },
+            { "value": "return", "label": "Returns" },
+            { "value": "badge", "label": "Genuine" },
+            { "value": "chat", "label": "Support" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Fast EU shipping" },
+        { "type": "text", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "ZGlobal trust bar" } ]
+}
+{% endschema %}

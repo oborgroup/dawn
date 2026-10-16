@@ -1,144 +1,237 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
-      "type": "hero-zglobal",
+      "type": "zg-hero-cards",
       "settings": {
         "eyebrow": "ZGlobal Store",
         "heading": "Beauty, outdoor & home — delivered",
-        "text": "Shop trusted brands at everyday prices. Fast shipping across Europe.",
-        "padding_vertical": 130,
-        "alignment": "center",
-        "button_label_1": "Shop new arrivals",
-        "button_link_1": "shopify://collections/all",
-        "button_label_2": "Browse all",
-        "button_link_2": "shopify://collections/all"
-      }
-    },
-    "categories": {
-      "type": "collection-list",
-      "blocks": {
-        "cat_beauty": { "type": "featured_collection", "settings": { "collection": "beauty" } },
-        "cat_sport": { "type": "featured_collection", "settings": { "collection": "sport" } },
-        "cat_home": { "type": "featured_collection", "settings": { "collection": "home" } }
+        "text": "Genuine brands at everyday prices. Shop SHEGLAM, OutdoorMaster, Vakume Home and RedKey in one place.",
+        "button_label": "Shop all products",
+        "button_link": "shopify://collections/all"
       },
-      "block_order": ["cat_beauty", "cat_sport", "cat_home"],
-      "settings": {
-        "title": "Shop by category",
-        "heading_size": "h1",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 52,
-        "padding_bottom": 20
-      }
-    },
-    "brands": {
-      "type": "collection-list",
       "blocks": {
-        "brand_sheglam": { "type": "featured_collection", "settings": { "collection": "sheglam" } },
-        "brand_outdoormaster": { "type": "featured_collection", "settings": { "collection": "outdoormaster" } },
-        "brand_vakumehome": { "type": "featured_collection", "settings": { "collection": "vakumehome" } },
-        "brand_redkey": { "type": "featured_collection", "settings": { "collection": "redkey" } }
-      },
-      "block_order": ["brand_sheglam", "brand_outdoormaster", "brand_vakumehome", "brand_redkey"],
-      "settings": {
-        "title": "Shop by brand",
-        "heading_size": "h1",
-        "image_ratio": "square",
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 20,
-        "padding_bottom": 28
-      }
-    },
-    "new_arrivals": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "New arrivals",
-        "heading_size": "h1",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": true,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "swipe_on_mobile": true,
-        "padding_top": 28,
-        "padding_bottom": 36
-      }
-    },
-    "promo": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
+        "card_beauty": {
+          "type": "card",
           "settings": {
-            "heading": "Quality you can trust",
-            "heading_size": "h1"
+            "title": "Beauty & cosmetics",
+            "collection": "beauty",
+            "handle": "beauty",
+            "link_label": "Shop beauty"
           }
         },
-        "text": {
-          "type": "text",
+        "card_sport": {
+          "type": "card",
           "settings": {
-            "text": "<p>Every product in our store is sourced from established brands and shipped from the EU. Genuine goods, clear pricing, quick delivery.</p>",
-            "text_style": "body"
+            "title": "Sport & outdoor",
+            "collection": "sport",
+            "handle": "sport",
+            "link_label": "Shop sport & outdoor"
           }
         },
-        "button": {
-          "type": "button",
+        "card_home": {
+          "type": "card",
           "settings": {
-            "button_label": "Shop all products",
-            "button_link": "shopify://collections/all",
-            "button_style_secondary": false
+            "title": "Home & living",
+            "collection": "home",
+            "handle": "home",
+            "link_label": "Shop home"
+          }
+        },
+        "card_sheglam": {
+          "type": "card",
+          "settings": {
+            "title": "Best of SHEGLAM",
+            "collection": "sheglam",
+            "handle": "sheglam",
+            "link_label": "Shop SHEGLAM"
           }
         }
       },
       "block_order": [
-        "heading",
-        "text",
-        "button"
-      ],
+        "card_beauty",
+        "card_sport",
+        "card_home",
+        "card_sheglam"
+      ]
+    },
+    "deals": {
+      "type": "zg-product-row",
       "settings": {
-        "height": "medium",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "image_behavior": "none",
-        "content_layout": "no-overlap",
-        "desktop_content_position": "middle",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "section_color_scheme": "scheme-2",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "title": "Today's deals",
+        "products_to_show": 12,
+        "columns_desktop": 5,
+        "deals_only": true,
+        "show_vendor": true,
+        "show_more": true,
+        "more_label": "See more",
+        "padding_top": 4,
+        "padding_bottom": 12
       }
+    },
+    "row_sheglam": {
+      "type": "zg-product-row",
+      "settings": {
+        "title": "Best of SHEGLAM",
+        "collection": "sheglam",
+        "handle": "sheglam",
+        "products_to_show": 12,
+        "columns_desktop": 5,
+        "deals_only": false,
+        "show_vendor": true,
+        "show_more": true,
+        "more_label": "See more",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "row_sport": {
+      "type": "zg-product-row",
+      "settings": {
+        "title": "Outdoor & sport picks",
+        "collection": "sport",
+        "handle": "sport",
+        "products_to_show": 12,
+        "columns_desktop": 5,
+        "deals_only": false,
+        "show_vendor": true,
+        "show_more": true,
+        "more_label": "See more",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "brands": {
+      "type": "zg-brand-strip",
+      "settings": {
+        "title": "Shop by brand",
+        "padding_top": 12,
+        "padding_bottom": 12
+      },
+      "blocks": {
+        "b_sheglam": {
+          "type": "brand",
+          "settings": {
+            "name": "SHEGLAM",
+            "collection": "sheglam",
+            "handle": "sheglam",
+            "subtitle": "Makeup & cosmetics →",
+            "color": "#BE185D"
+          }
+        },
+        "b_om": {
+          "type": "brand",
+          "settings": {
+            "name": "OutdoorMaster",
+            "collection": "outdoormaster",
+            "handle": "outdoormaster",
+            "subtitle": "Outdoor & sports gear →",
+            "color": "#15803D"
+          }
+        },
+        "b_vh": {
+          "type": "brand",
+          "settings": {
+            "name": "Vakume Home",
+            "collection": "vakumehome",
+            "handle": "vakumehome",
+            "subtitle": "Home & cleaning →",
+            "color": "#B45309"
+          }
+        },
+        "b_rk": {
+          "type": "brand",
+          "settings": {
+            "name": "RedKey",
+            "collection": "redkey",
+            "handle": "redkey",
+            "subtitle": "Home essentials →",
+            "color": "#C8483A"
+          }
+        }
+      },
+      "block_order": [
+        "b_sheglam",
+        "b_om",
+        "b_vh",
+        "b_rk"
+      ]
+    },
+    "row_home": {
+      "type": "zg-product-row",
+      "settings": {
+        "title": "Home essentials",
+        "collection": "home",
+        "handle": "home",
+        "products_to_show": 12,
+        "columns_desktop": 5,
+        "deals_only": false,
+        "show_vendor": true,
+        "show_more": true,
+        "more_label": "See more",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "row_all": {
+      "type": "zg-product-row",
+      "settings": {
+        "title": "More to explore",
+        "products_to_show": 16,
+        "columns_desktop": 5,
+        "deals_only": false,
+        "show_vendor": true,
+        "show_more": true,
+        "more_label": "See more",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "trust": {
+      "type": "zg-trust-bar",
+      "settings": {
+        "padding_top": 12,
+        "padding_bottom": 24
+      },
+      "blocks": {
+        "t1": {
+          "type": "point",
+          "settings": {
+            "icon": "truck",
+            "title": "Shipping across the EU",
+            "text": "Tracked delivery to your door"
+          }
+        },
+        "t2": {
+          "type": "point",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Payments processed by Shopify"
+          }
+        },
+        "t3": {
+          "type": "point",
+          "settings": {
+            "icon": "return",
+            "title": "14-day returns",
+            "text": "EU right of withdrawal"
+          }
+        },
+        "t4": {
+          "type": "point",
+          "settings": {
+            "icon": "badge",
+            "title": "Genuine brands",
+            "text": "Sourced from official brand partners"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
     },
     "newsletter": {
       "type": "newsletter",
@@ -175,10 +268,13 @@
   },
   "order": [
     "hero",
-    "categories",
+    "deals",
+    "row_sheglam",
+    "row_sport",
     "brands",
-    "new_arrivals",
-    "promo",
+    "row_home",
+    "row_all",
+    "trust",
     "newsletter"
   ]
 }

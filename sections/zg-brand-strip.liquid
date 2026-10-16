@@ -1,0 +1,86 @@
+{%- comment -%}
+  Brand tiles linking to each brand collection. Uses the collection image as
+  the logo when one is set, otherwise a coloured initials badge.
+{%- endcomment -%}
+
+{%- style -%}
+  #zgB-{{ section.id }} { background: #EAEDF1; padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px; }
+  #zgB-{{ section.id }} .zgB__panel { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; background: #fff; padding: 2rem; }
+  #zgB-{{ section.id }} .zgB__title { margin: 0 0 1.6rem; font-size: 2.1rem; color: #0F1111; }
+  #zgB-{{ section.id }} .zgB__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.6rem; }
+  #zgB-{{ section.id }} .zgB__tile { display: flex; align-items: center; gap: 1.4rem; padding: 1.6rem; border: 1px solid #E3E6EA; border-radius: 8px; text-decoration: none; color: #0F1111; transition: box-shadow 0.15s, transform 0.15s; }
+  #zgB-{{ section.id }} .zgB__tile:hover { box-shadow: 0 4px 14px rgba(13,43,94,0.14); transform: translateY(-2px); }
+  #zgB-{{ section.id }} .zgB__logo { flex: 0 0 56px; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.8rem; overflow: hidden; background: #F7F8FA; }
+  #zgB-{{ section.id }} .zgB__logo img { width: 100%; height: 100%; object-fit: contain; }
+  #zgB-{{ section.id }} .zgB__name { display: block; font-weight: 700; font-size: 1.6rem; }
+  #zgB-{{ section.id }} .zgB__sub { display: block; font-size: 1.3rem; color: #565959; margin-top: 0.2rem; }
+  @media screen and (max-width: 749px) {
+    #zgB-{{ section.id }} { padding-left: 0.8rem; padding-right: 0.8rem; }
+    #zgB-{{ section.id }} .zgB__grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    #zgB-{{ section.id }} .zgB__tile { flex-direction: column; text-align: center; padding: 1.4rem 1rem; }
+  }
+{%- endstyle -%}
+
+<div id="zgB-{{ section.id }}" class="zgB">
+  <div class="zgB__panel">
+    {%- if section.settings.title != blank -%}
+      <h2 class="zgB__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    <div class="zgB__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign c = block.settings.collection
+          if c == blank and block.settings.handle != blank
+            assign c = collections[block.settings.handle]
+          endif
+          assign brand_name = block.settings.name
+          if brand_name == blank and c != blank
+            assign brand_name = c.title
+          endif
+          assign brand_url = routes.all_products_collection_url
+          if c != blank
+            assign brand_url = c.url
+          endif
+          assign initials = brand_name | slice: 0, 2 | upcase
+        -%}
+        <a class="zgB__tile" href="{{ brand_url }}" {{ block.shopify_attributes }}>
+          {%- if c != blank and c.image != blank -%}
+            <span class="zgB__logo">{{ c.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: brand_name }}</span>
+          {%- else -%}
+            <span class="zgB__logo" style="background: {{ block.settings.color }};">{{ initials }}</span>
+          {%- endif -%}
+          <span>
+            <span class="zgB__name">{{ brand_name }}</span>
+            <span class="zgB__sub">{{ block.settings.subtitle | default: 'Shop the brand →' }}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ZGlobal brand strip",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Shop by brand" },
+    { "type": "range", "id": "padding_top", "label": "Top spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 12 }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "handle", "label": "Collection handle (fallback)" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Shop the brand →" },
+        { "type": "color", "id": "color", "label": "Badge colour", "default": "#0D2B5E" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "ZGlobal brand strip" } ]
+}
+{% endschema %}

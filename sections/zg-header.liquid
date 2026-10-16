@@ -1,0 +1,257 @@
+{%- comment -%}
+  ZGlobal marketplace header (Amazon-style): utility bar, logo, wide search,
+  account + cart, and a category strip with an "All" slide-out menu.
+  The cart link keeps id="cart-icon-bubble" so Dawn's cart drawer and
+  AJAX cart count updates keep working.
+{%- endcomment -%}
+
+{%- style -%}
+  @media screen and (min-width: 990px) {
+    .zg-header-section { position: sticky; top: 0; z-index: 20; }
+  }
+  .zgh { --zgh-deep: #0A1F44; --zgh-navy: #0D2B5E; --zgh-gold: #C49A3A; --zgh-gold-hi: #D9B256; font-family: var(--font-body-family); }
+  .zgh a { text-decoration: none; }
+  .zgh-top { background: var(--zgh-gold); color: var(--zgh-deep); font-size: 1.25rem; font-weight: 600; text-align: center; padding: 0.5rem 1.6rem; letter-spacing: 0.02em; }
+  .zgh-top a { color: inherit; text-decoration: underline; }
+  .zgh-main { background: var(--zgh-deep); color: #fff; }
+  .zgh-main__inner { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; padding: 1rem 2rem; display: flex; align-items: center; gap: 1.6rem; }
+  .zgh-logo { display: flex; align-items: center; flex-shrink: 0; padding: 0.4rem 0.6rem; border: 1px solid transparent; border-radius: 4px; color: #fff; }
+  .zgh-logo:hover { border-color: rgba(255,255,255,0.6); }
+  .zgh-logo__img { display: block; height: auto; max-height: 44px; width: auto; max-width: {{ settings.logo_width | default: 160 }}px; {% if section.settings.logo_white %}filter: brightness(0) invert(1);{% endif %} }
+  .zgh-logo__text { font-family: var(--font-heading-family); font-weight: 700; font-size: 2.2rem; color: #fff; }
+  .zgh-search { flex: 1 1 auto; display: flex; min-width: 0; height: 44px; border-radius: 6px; overflow: hidden; background: #fff; box-shadow: 0 0 0 2px transparent; transition: box-shadow 0.15s; }
+  .zgh-search:focus-within { box-shadow: 0 0 0 3px var(--zgh-gold); }
+  .zgh-search__input { flex: 1 1 auto; min-width: 0; border: 0; outline: 0; padding: 0 1.4rem; font-size: 1.6rem; color: #111; background: #fff; font-family: inherit; }
+  .zgh-search__input::-webkit-search-cancel-button { display: none; }
+  .zgh-search__btn { flex: 0 0 auto; width: 54px; border: 0; background: var(--zgh-gold); color: var(--zgh-deep); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .zgh-search__btn:hover { background: var(--zgh-gold-hi); }
+  .zgh-search__btn svg { width: 22px; height: 22px; }
+  .zgh-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
+  .zgh-action { display: flex; flex-direction: column; justify-content: center; padding: 0.5rem 0.8rem; border: 1px solid transparent; border-radius: 4px; color: #fff; line-height: 1.25; white-space: nowrap; }
+  .zgh-action:hover { border-color: rgba(255,255,255,0.6); }
+  .zgh-action__small { font-size: 1.2rem; color: rgba(255,255,255,0.8); }
+  .zgh-action__big { font-size: 1.4rem; font-weight: 700; }
+  .zgh-cartwrap { display: flex; align-items: flex-end; padding: 0.3rem 0.6rem; border: 1px solid transparent; border-radius: 4px; }
+  .zgh-cartwrap:hover { border-color: rgba(255,255,255,0.6); }
+  #cart-icon-bubble.zgh-cart { position: relative; display: flex; color: #fff; width: 40px; height: 40px; align-items: center; justify-content: center; }
+  #cart-icon-bubble.zgh-cart .svg-wrapper, #cart-icon-bubble.zgh-cart svg { width: 34px; height: 34px; color: #fff; }
+  #cart-icon-bubble.zgh-cart .cart-count-bubble { position: absolute; top: -2px; right: -4px; left: auto; bottom: auto; width: 20px; height: 20px; border-radius: 50%; background: var(--zgh-gold); color: var(--zgh-deep); font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .zgh-cart__label { color: #fff; font-weight: 700; font-size: 1.4rem; padding-bottom: 0.4rem; }
+  .zgh-nav { background: var(--zgh-navy); color: #fff; }
+  .zgh-nav__inner { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; padding: 0 1.4rem; display: flex; align-items: center; gap: 0.2rem; }
+  .zgh-nav__list { display: flex; align-items: center; gap: 0.2rem; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; }
+  .zgh-nav__list::-webkit-scrollbar { display: none; }
+  .zgh-nav__link, .zgh-all > summary { display: flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1rem; color: #fff; font-size: 1.4rem; white-space: nowrap; border: 1px solid transparent; border-radius: 3px; cursor: pointer; }
+  .zgh-nav__link:hover, .zgh-all > summary:hover { border-color: rgba(255,255,255,0.7); }
+  .zgh-nav__link--accent { color: var(--zgh-gold-hi); font-weight: 700; }
+  .zgh-all { flex-shrink: 0; }
+  .zgh-all > summary { list-style: none; font-weight: 700; }
+  .zgh-all > summary::-webkit-details-marker { display: none; }
+  .zgh-all > summary svg { width: 20px; height: 20px; }
+  .zgh .zgh-all__overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1001; }
+  .zgh-all__panel { position: fixed; top: 0; left: 0; bottom: 0; width: min(340px, 86vw); background: #fff; color: #111; z-index: 1002; overflow-y: auto; box-shadow: 4px 0 24px rgba(0,0,0,0.3); animation: zghSlide 0.22s ease-out; }
+  @keyframes zghSlide { from { transform: translateX(-100%); } to { transform: none; } }
+  .zgh-all__head { background: var(--zgh-navy); color: #fff; padding: 1.6rem 2rem; font-size: 1.8rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+  .zgh-all__close { background: none; border: 0; color: #fff; cursor: pointer; padding: 0.4rem; display: flex; }
+  .zgh-all__close svg { width: 18px; height: 18px; }
+  .zgh-all__group { padding: 1.2rem 0; border-bottom: 1px solid #e5e7eb; }
+  .zgh-all__title { font-size: 1.6rem; font-weight: 700; padding: 0.6rem 2rem; margin: 0; color: #111; }
+  .zgh-all__link { display: block; padding: 1rem 2rem; color: #222; font-size: 1.5rem; }
+  .zgh-all__link:hover { background: #f3f4f6; }
+  @media screen and (max-width: 749px) {
+    .zgh-main__inner { flex-wrap: wrap; padding: 0.8rem 1.2rem; gap: 0.8rem; }
+    .zgh-logo { order: 1; }
+    .zgh-actions { order: 2; margin-left: auto; }
+    .zgh-search { order: 3; flex-basis: 100%; height: 42px; }
+    .zgh-action__small { display: none; }
+    .zgh-action__big { font-size: 1.3rem; }
+    .zgh-cart__label { display: none; }
+    .zgh-top { font-size: 1.15rem; }
+  }
+{%- endstyle -%}
+
+<header class="zgh" role="banner">
+  {%- if section.settings.topbar_text != blank -%}
+    <div class="zgh-top">
+      {%- if section.settings.topbar_link != blank -%}
+        <a href="{{ section.settings.topbar_link }}">{{ section.settings.topbar_text }}</a>
+      {%- else -%}
+        {{ section.settings.topbar_text }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="zgh-main">
+    <div class="zgh-main__inner">
+      <a class="zgh-logo" href="{{ routes.root_url }}">
+        {%- if settings.logo != blank -%}
+          {{ settings.logo | image_url: width: 400 | image_tag: class: 'zgh-logo__img', alt: shop.name, loading: 'eager', widths: '200, 400' }}
+        {%- else -%}
+          <span class="zgh-logo__text">{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+
+      <form class="zgh-search" action="{{ routes.search_url }}" method="get" role="search">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input
+          class="zgh-search__input"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ section.settings.search_placeholder | default: 'Search products and brands' | escape }}"
+          aria-label="{{ 'general.search.search' | t }}"
+          autocomplete="off"
+        >
+        <button class="zgh-search__btn" type="submit" aria-label="{{ 'general.search.search' | t }}">
+          {{- 'icon-search.svg' | inline_asset_content -}}
+        </button>
+      </form>
+
+      <div class="zgh-actions">
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="zgh-action" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+            <span class="zgh-action__small">
+              {%- if customer -%}Hello, {{ customer.first_name | default: 'there' }}{%- else -%}Hello, sign in{%- endif -%}
+            </span>
+            <span class="zgh-action__big">Account &amp; orders</span>
+          </a>
+        {%- endif -%}
+
+        <div class="zgh-cartwrap">
+          <a href="{{ routes.cart_url }}" class="zgh-cart" id="cart-icon-bubble">
+            {%- if cart == empty -%}
+              <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+            {%- else -%}
+              <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+            {%- if cart != empty -%}
+              <div class="cart-count-bubble">
+                {%- if cart.item_count < 100 -%}
+                  <span aria-hidden="true">{{ cart.item_count }}</span>
+                {%- endif -%}
+                <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+              </div>
+            {%- endif -%}
+          </a>
+          <a href="{{ routes.cart_url }}" class="zgh-cart__label" data-zg-cart-label>{{ 'templates.cart.cart' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="zgh-nav" aria-label="Categories">
+    <div class="zgh-nav__inner">
+      <details class="zgh-all" id="ZgAllMenu-{{ section.id }}">
+        <summary>{{- 'icon-hamburger.svg' | inline_asset_content -}}<span>All</span></summary>
+        <div class="zgh-all__overlay" data-zg-all-close></div>
+        <div class="zgh-all__panel" role="dialog" aria-label="All categories">
+          <div class="zgh-all__head">
+            <span>
+              {%- if customer -%}Hello, {{ customer.first_name | default: 'there' }}{%- else -%}Hello, welcome{%- endif -%}
+            </span>
+            <button type="button" class="zgh-all__close" data-zg-all-close aria-label="{{ 'accessibility.close' | t }}">
+              {{- 'icon-close.svg' | inline_asset_content -}}
+            </button>
+          </div>
+          <div class="zgh-all__group">
+            <p class="zgh-all__title">Shop by department</p>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign link_url = block.settings.url
+                if link_url == blank and block.settings.collection != blank
+                  assign link_url = block.settings.collection.url
+                endif
+                assign link_label = block.settings.label
+                if link_label == blank and block.settings.collection != blank
+                  assign link_label = block.settings.collection.title
+                endif
+              -%}
+              {%- if link_url != blank and link_label != blank -%}
+                <a class="zgh-all__link" href="{{ link_url }}" {{ block.shopify_attributes }}>{{ link_label }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="zgh-all__group">
+            <p class="zgh-all__title">Help &amp; settings</p>
+            {%- if shop.customer_accounts_enabled -%}
+              <a class="zgh-all__link" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
+                {%- if customer -%}Your account{%- else -%}Sign in{%- endif -%}
+              </a>
+            {%- endif -%}
+            <a class="zgh-all__link" href="{{ routes.cart_url }}">{{ 'templates.cart.cart' | t }}</a>
+            <a class="zgh-all__link" href="{{ routes.search_url }}">{{ 'general.search.search' | t }}</a>
+          </div>
+        </div>
+      </details>
+
+      <ul class="zgh-nav__list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign link_url = block.settings.url
+            if link_url == blank and block.settings.collection != blank
+              assign link_url = block.settings.collection.url
+            endif
+            assign link_label = block.settings.label
+            if link_label == blank and block.settings.collection != blank
+              assign link_label = block.settings.collection.title
+            endif
+          -%}
+          {%- if link_url != blank and link_label != blank -%}
+            <li>
+              <a class="zgh-nav__link{% if block.settings.accent %} zgh-nav__link--accent{% endif %}" href="{{ link_url }}">{{ link_label }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  (function () {
+    var menu = document.getElementById('ZgAllMenu-{{ section.id }}');
+    if (menu) {
+      menu.querySelectorAll('[data-zg-all-close]').forEach(function (el) {
+        el.addEventListener('click', function (e) { e.preventDefault(); menu.removeAttribute('open'); });
+      });
+      document.addEventListener('keyup', function (e) {
+        if (e.key === 'Escape' && menu.hasAttribute('open')) menu.removeAttribute('open');
+      });
+    }
+    // "Cart" text label opens the cart drawer (when the drawer is enabled).
+    document.querySelectorAll('[data-zg-cart-label]').forEach(function (label) {
+      label.addEventListener('click', function (e) {
+        var bubble = document.getElementById('cart-icon-bubble');
+        if (bubble && document.querySelector('cart-drawer')) { e.preventDefault(); bubble.click(); }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "ZGlobal header",
+  "class": "zg-header-section",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    { "type": "text", "id": "topbar_text", "label": "Top bar text", "default": "Fast shipping across the EU · Genuine brands · Secure checkout" },
+    { "type": "url", "id": "topbar_link", "label": "Top bar link" },
+    { "type": "checkbox", "id": "logo_white", "label": "Show logo in white", "info": "Use for a dark/single-colour logo on the navy header.", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search products and brands" }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Category link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "info": "Leave empty to use the collection title." },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "url", "label": "Custom link", "info": "Overrides the collection link." },
+        { "type": "checkbox", "id": "accent", "label": "Highlight in gold", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

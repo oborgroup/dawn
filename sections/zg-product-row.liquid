@@ -1,0 +1,191 @@
+{%- comment -%}
+  Marketplace product row: horizontal, swipeable carousel of products from a
+  collection, rendered with Dawn's card-product (quick add + cart drawer keep
+  working). "Deals only" shows just discounted products with a % off badge.
+  The countdown only appears when a real sale end date is entered.
+{%- endcomment -%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign c = section.settings.collection
+  if c == blank and section.settings.handle != blank
+    assign c = collections[section.settings.handle]
+  endif
+  if c == blank
+    assign c = collections.all
+  endif
+  assign max_items = section.settings.products_to_show
+  assign deals_only = section.settings.deals_only
+
+  assign eligible = 0
+  for product in c.products limit: 50
+    if deals_only
+      if product.compare_at_price > product.price
+        assign eligible = eligible | plus: 1
+      endif
+    else
+      assign eligible = eligible | plus: 1
+    endif
+  endfor
+
+  assign row_title = section.settings.title
+  if row_title == blank
+    assign row_title = c.title
+  endif
+-%}
+
+{%- if eligible > 0 -%}
+  {%- style -%}
+    #zgR-{{ section.id }} { background: #EAEDF1; padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px; }
+    #zgR-{{ section.id }} .zgR__panel { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; background: #fff; padding: 2rem 2rem 1.2rem; position: relative; }
+    #zgR-{{ section.id }} .zgR__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.6rem 1.6rem; margin-bottom: 1.4rem; }
+    #zgR-{{ section.id }} .zgR__title { margin: 0; font-size: 2.1rem; color: #0F1111; }
+    #zgR-{{ section.id }} .zgR__more { font-size: 1.4rem; color: #1A5FB4; text-decoration: none; font-weight: 600; }
+    #zgR-{{ section.id }} .zgR__more:hover { color: #C45500; text-decoration: underline; }
+    #zgR-{{ section.id }} .zgR__timer { display: none; align-items: center; gap: 0.6rem; font-size: 1.4rem; color: #0F1111; }
+    #zgR-{{ section.id }} .zgR__timer.is-live { display: inline-flex; }
+    #zgR-{{ section.id }} .zgR__timer b { background: #CC0C39; color: #fff; padding: 0.2rem 0.7rem; border-radius: 3px; font-variant-numeric: tabular-nums; }
+    #zgR-{{ section.id }} .zgR__track {
+      list-style: none; margin: 0; padding: 0 0 1rem; display: grid; grid-auto-flow: column;
+      grid-auto-columns: calc((100% - {{ section.settings.columns_desktop | minus: 1 }} * 1.6rem) / {{ section.settings.columns_desktop }}); gap: 1.6rem;
+      overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin;
+    }
+    #zgR-{{ section.id }} .zgR__item { position: relative; scroll-snap-align: start; min-width: 0; }
+    #zgR-{{ section.id }} .zgR__off { position: absolute; top: 0.8rem; left: 0.8rem; z-index: 2; background: #CC0C39; color: #fff; font-size: 1.25rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 3px; pointer-events: none; }
+    #zgR-{{ section.id }} .zgR__item--sale .card__badge { display: none; }
+    #zgR-{{ section.id }} .card__heading { font-size: 1.4rem; font-weight: 400; line-height: 1.35; }
+    #zgR-{{ section.id }} .card__heading a { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #zgR-{{ section.id }} .price { font-size: 1.6rem; }
+    #zgR-{{ section.id }} .price-item--sale, #zgR-{{ section.id }} .price__regular .price-item--regular { font-weight: 700; color: #0F1111; }
+    #zgR-{{ section.id }} .quick-add__submit {
+      --color-button: 196,154,58; --color-button-text: 10,31,68;
+      --buttons-radius: 2rem; --buttons-radius-outset: 2rem; border-radius: 2rem; min-height: 3.6rem; font-weight: 600;
+    }
+    #zgR-{{ section.id }} .zgR__arrow {
+      position: absolute; top: 45%; z-index: 3; width: 44px; height: 88px; border: 0; cursor: pointer;
+      background: rgba(255,255,255,0.92); box-shadow: 0 1px 6px rgba(0,0,0,0.25); color: #0F1111; font-size: 2.4rem; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #zgR-{{ section.id }} .zgR__arrow--prev { left: 0; border-radius: 0 4px 4px 0; }
+    #zgR-{{ section.id }} .zgR__arrow--next { right: 0; border-radius: 4px 0 0 4px; }
+    #zgR-{{ section.id }} .zgR__arrow:hover { background: #fff; }
+    @media screen and (max-width: 989px) {
+      #zgR-{{ section.id }} .zgR__track { grid-auto-columns: calc((100% - 2 * 1.2rem) / 3); gap: 1.2rem; }
+    }
+    @media screen and (max-width: 749px) {
+      #zgR-{{ section.id }} { padding-left: 0.8rem; padding-right: 0.8rem; }
+      #zgR-{{ section.id }} .zgR__panel { padding: 1.4rem 1.2rem 0.8rem; }
+      #zgR-{{ section.id }} .zgR__title { font-size: 1.8rem; }
+      #zgR-{{ section.id }} .zgR__track { grid-auto-columns: 44%; gap: 1rem; }
+      #zgR-{{ section.id }} .zgR__arrow { display: none; }
+    }
+  {%- endstyle -%}
+
+  <div id="zgR-{{ section.id }}" class="zgR">
+    <div class="zgR__panel">
+      <div class="zgR__head">
+        <h2 class="zgR__title">{{ row_title }}</h2>
+        {%- if section.settings.deal_end != blank -%}
+          <span class="zgR__timer" data-zg-end="{{ section.settings.deal_end | escape }}">
+            Ends in <b data-zg-clock>--:--:--</b>
+          </span>
+        {%- endif -%}
+        {%- if section.settings.show_more -%}
+          <a class="zgR__more" href="{{ c.url | default: routes.all_products_collection_url }}">{{ section.settings.more_label | default: 'See more' }}</a>
+        {%- endif -%}
+      </div>
+
+      <button type="button" class="zgR__arrow zgR__arrow--prev" data-zg-scroll="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
+      <ul class="zgR__track" data-zg-track role="list">
+        {%- assign rendered = 0 -%}
+        {%- for product in c.products limit: 50 -%}
+          {%- if rendered >= max_items -%}{%- break -%}{%- endif -%}
+          {%- liquid
+            assign on_sale = false
+            if product.compare_at_price > product.price
+              assign on_sale = true
+            endif
+          -%}
+          {%- if deals_only == false or on_sale -%}
+            {%- assign rendered = rendered | plus: 1 -%}
+            <li class="zgR__item{% if on_sale %} zgR__item--sale{% endif %}">
+              {%- if on_sale -%}
+                {%- assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | floor -%}
+                {%- if pct > 0 -%}<span class="zgR__off">-{{ pct }}%</span>{%- endif -%}
+              {%- endif -%}
+              {% render 'card-product',
+                card_product: product,
+                media_aspect_ratio: 'square',
+                show_secondary_image: false,
+                show_vendor: section.settings.show_vendor,
+                show_rating: true,
+                lazy_load: true,
+                skip_styles: true,
+                section_id: section.id,
+                quick_add: 'standard',
+                product_view_context: 'collection'
+              %}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <button type="button" class="zgR__arrow zgR__arrow--next" data-zg-scroll="1" aria-label="{{ 'general.slider.next_slide' | t }}">&#8250;</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('zgR-{{ section.id }}');
+      if (!root) return;
+      var track = root.querySelector('[data-zg-track]');
+      root.querySelectorAll('[data-zg-scroll]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          track.scrollBy({ left: parseInt(btn.dataset.zgScroll, 10) * track.clientWidth * 0.9, behavior: 'smooth' });
+        });
+      });
+      var timer = root.querySelector('[data-zg-end]');
+      if (timer) {
+        var end = new Date(timer.dataset.zgEnd.trim().replace(' ', 'T'));
+        var clock = timer.querySelector('[data-zg-clock]');
+        var tick = function () {
+          var ms = end - new Date();
+          if (isNaN(ms) || ms <= 0) { timer.classList.remove('is-live'); return false; }
+          var s = Math.floor(ms / 1000), d = Math.floor(s / 86400);
+          var h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+          var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+          clock.textContent = (d > 0 ? d + 'd ' : '') + pad(h) + ':' + pad(m) + ':' + pad(sec);
+          timer.classList.add('is-live');
+          return true;
+        };
+        if (tick()) { var iv = setInterval(function () { if (!tick()) clearInterval(iv); }, 1000); }
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "ZGlobal product row",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the collection title." },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "handle", "label": "Collection handle (fallback)", "info": "Used if no collection is picked. Empty = all products." },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 4, "max": 24, "step": 1, "default": 12 },
+    { "type": "range", "id": "columns_desktop", "label": "Visible per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "deals_only", "label": "Deals only (discounted products)", "info": "Shows only products with a compare-at price. The row hides itself if there are none.", "default": false },
+    { "type": "text", "id": "deal_end", "label": "Deal end date (optional)", "info": "Shows a real countdown, e.g. 2026-11-30 23:59. Leave empty for no countdown." },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show brand", "default": true },
+    { "type": "checkbox", "id": "show_more", "label": "Show 'See more' link", "default": true },
+    { "type": "text", "id": "more_label", "label": "'See more' label", "default": "See more" },
+    { "type": "range", "id": "padding_top", "label": "Top spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 12 }
+  ],
+  "presets": [ { "name": "ZGlobal product row" } ]
+}
+{% endschema %}

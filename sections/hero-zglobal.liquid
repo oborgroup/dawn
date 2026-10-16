@@ -81,13 +81,13 @@
     width: clamp(220px, 30vw, 400px);
     aspect-ratio: 1 / 1;
   }
-  #zgHero-{{ section.id }} .zgHero__orbit {
+  #zgHero-{{ section.id }} .zgHero__orbit { display: block;
     position: absolute; left: -9%; right: -9%; top: 50%;
     height: 34%; transform: translateY(-50%) rotate(-18deg);
     border: 1.5px solid rgba(196,154,58,0.55); border-radius: 50%;
     pointer-events: none;
   }
-  #zgHero-{{ section.id }} .zgHero__sphere {
+  #zgHero-{{ section.id }} .zgHero__sphere { display: block;
     position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
     background:
       radial-gradient(circle at 32% 26%, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.10) 18%, transparent 44%),
