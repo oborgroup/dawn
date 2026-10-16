@@ -1,57 +1,68 @@
 {
   "sections": {
     "hero": {
-      "type": "zg-hero-cards",
+      "type": "zg-hero-bento",
       "settings": {
-        "eyebrow": "ZGlobal Store",
-        "heading": "Beauty, outdoor & home — delivered",
-        "text": "Genuine brands at everyday prices. Shop SHEGLAM, OutdoorMaster, Vakume Home and RedKey in one place.",
-        "button_label": "Shop all products",
-        "button_link": "shopify://collections/all"
+        "padding_top": 20,
+        "padding_bottom": 4
       },
       "blocks": {
-        "card_beauty": {
-          "type": "card",
+        "tile_main": {
+          "type": "tile",
           "settings": {
-            "title": "Beauty & cosmetics",
-            "collection": "beauty",
-            "handle": "beauty",
-            "link_label": "Shop beauty"
-          }
-        },
-        "card_sport": {
-          "type": "card",
-          "settings": {
-            "title": "Sport & outdoor",
-            "collection": "sport",
-            "handle": "sport",
-            "link_label": "Shop sport & outdoor"
-          }
-        },
-        "card_home": {
-          "type": "card",
-          "settings": {
-            "title": "Home & living",
-            "collection": "home",
-            "handle": "home",
-            "link_label": "Shop home"
-          }
-        },
-        "card_sheglam": {
-          "type": "card",
-          "settings": {
-            "title": "Best of SHEGLAM",
             "collection": "sheglam",
             "handle": "sheglam",
-            "link_label": "Shop SHEGLAM"
+            "badge": "✨ SHEGLAM",
+            "badge_style": "red",
+            "heading": "Makeup that's camera‑ready",
+            "text": "160+ SHEGLAM favourites — blush, lips, eyes and complexion at everyday prices.",
+            "button_label": "Shop SHEGLAM",
+            "bg": "#4338CA",
+            "text_color": "light"
+          }
+        },
+        "tile_wide": {
+          "type": "tile",
+          "settings": {
+            "collection": "outdoormaster",
+            "handle": "outdoormaster",
+            "heading": "Gear up for the outdoors",
+            "text": "Goggles, helmets, bags and more from OutdoorMaster.",
+            "button_label": "Shop now",
+            "bg": "#0D2B5E",
+            "text_color": "light"
+          }
+        },
+        "tile_a": {
+          "type": "tile",
+          "settings": {
+            "collection": "vakumehome",
+            "handle": "vakumehome",
+            "badge": "Vakume Home",
+            "badge_style": "gold",
+            "heading": "Clean home, less effort",
+            "bg": "#B45309",
+            "text_color": "light"
+          }
+        },
+        "tile_b": {
+          "type": "tile",
+          "settings": {
+            "collection": "redkey",
+            "handle": "redkey",
+            "badge": "RedKey",
+            "badge_style": "blue",
+            "heading": "Tools & smart home",
+            "bg": "#1E3A8A",
+            "text_color": "light"
           }
         }
       },
       "block_order": [
-        "card_beauty",
-        "card_sport",
-        "card_home",
-        "card_sheglam"
+        "tile_main",
+        "tile_wide",
+        "tile_a",
+        "tile_b"
       ]
     },
     "deals": {
@@ -264,10 +275,67 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "cards": {
+      "type": "zg-hero-cards",
+      "settings": {
+        "eyebrow": "ZGlobal Store",
+        "heading": "Beauty, outdoor & home — delivered",
+        "text": "Genuine brands at everyday prices. Shop SHEGLAM, OutdoorMaster, Vakume Home and RedKey in one place.",
+        "button_label": "Shop all products",
+        "button_link": "shopify://collections/all",
+        "show_banner": false,
+        "cards_padding_top": 12
+      },
+      "blocks": {
+        "card_beauty": {
+          "type": "card",
+          "settings": {
+            "title": "Beauty & cosmetics",
+            "collection": "beauty",
+            "handle": "beauty",
+            "link_label": "Shop beauty"
+          }
+        },
+        "card_sport": {
+          "type": "card",
+          "settings": {
+            "title": "Sport & outdoor",
+            "collection": "sport",
+            "handle": "sport",
+            "link_label": "Shop sport & outdoor"
+          }
+        },
+        "card_home": {
+          "type": "card",
+          "settings": {
+            "title": "Home & living",
+            "collection": "home",
+            "handle": "home",
+            "link_label": "Shop home"
+          }
+        },
+        "card_sheglam": {
+          "type": "card",
+          "settings": {
+            "title": "Best of SHEGLAM",
+            "collection": "sheglam",
+            "handle": "sheglam",
+            "link_label": "Shop SHEGLAM"
+          }
+        }
+      },
+      "block_order": [
+        "card_beauty",
+        "card_sport",
+        "card_home",
+        "card_sheglam"
+      ]
     }
   },
   "order": [
     "hero",
+    "cards",
     "deals",
     "row_sheglam",
     "row_sport",
