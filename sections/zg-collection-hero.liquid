@@ -1,0 +1,131 @@
+{%- comment -%}
+  Collection header: breadcrumb, title, product count, description and quick
+  links to other collections. Also styles Dawn's product grid + filters on
+  collection pages (marketplace look: grey page, white panels).
+{%- endcomment -%}
+
+{%- liquid
+  assign count = collection.products_count
+  assign desc = collection.description | strip_html | strip
+-%}
+
+{%- style -%}
+  body:has(#zgCH-{{ section.id }}) { background: #EAEDF1; }
+  #zgCH-{{ section.id }}, #zgCH-{{ section.id }} * { box-sizing: border-box; }
+  #zgCH-{{ section.id }} { background: #EAEDF1; padding: 1.6rem 2rem 0; }
+  #zgCH-{{ section.id }} .zgCH__banner {
+    max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; border-radius: 12px; overflow: hidden; position: relative;
+    background: radial-gradient(700px 360px at 90% -20%, rgba(196,154,58,0.25), transparent 60%), linear-gradient(135deg, #0A1F44 0%, #0D2B5E 60%, #123A7A 100%);
+    color: #fff; display: flex; align-items: center; gap: 2.4rem; padding: 2.8rem 3.2rem; min-height: 150px;
+  }
+  #zgCH-{{ section.id }} .zgCH__copy { flex: 1 1 auto; min-width: 0; }
+  #zgCH-{{ section.id }} .zgCH__crumbs { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: 1.3rem; color: rgba(255,255,255,0.75); margin: 0 0 0.8rem; padding: 0; list-style: none; }
+  #zgCH-{{ section.id }} .zgCH__crumbs a { color: rgba(255,255,255,0.85); text-decoration: none; }
+  #zgCH-{{ section.id }} .zgCH__crumbs a:hover { color: #fff; text-decoration: underline; }
+  #zgCH-{{ section.id }} .zgCH__crumbs li + li::before { content: "›"; margin-right: 0.6rem; color: rgba(255,255,255,0.5); }
+  #zgCH-{{ section.id }} .zgCH__title { margin: 0; color: #fff; font-size: clamp(2.6rem, 3.2vw, 4rem); line-height: 1.1; }
+  #zgCH-{{ section.id }} .zgCH__count { display: inline-block; margin-top: 0.8rem; background: #C49A3A; color: #0A1F44; font-weight: 700; font-size: 1.3rem; padding: 0.3rem 1rem; border-radius: 999px; }
+  #zgCH-{{ section.id }} .zgCH__desc { margin: 1rem 0 0; max-width: 70ch; font-size: 1.5rem; line-height: 1.5; color: rgba(255,255,255,0.85); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #zgCH-{{ section.id }} .zgCH__media { flex: 0 0 auto; width: 120px; height: 120px; border-radius: 16px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+  #zgCH-{{ section.id }} .zgCH__media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  #zgCH-{{ section.id }} .zgCH__chips { max-width: {{ settings.page_width | default: 1400 }}px; margin: 1.4rem auto 0; display: flex; gap: 0.8rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 0.2rem; }
+  #zgCH-{{ section.id }} .zgCH__chips::-webkit-scrollbar { display: none; }
+  #zgCH-{{ section.id }} .zgCH__chip { flex: 0 0 auto; display: inline-flex; align-items: center; padding: 0.8rem 1.6rem; border-radius: 999px; background: #fff; border: 1px solid #D5DAE1; color: #0F1111; font-size: 1.4rem; text-decoration: none; white-space: nowrap; transition: border-color 0.15s, background 0.15s; }
+  #zgCH-{{ section.id }} .zgCH__chip:hover { border-color: #0D2B5E; }
+  #zgCH-{{ section.id }} .zgCH__chip.is-active { background: #0D2B5E; border-color: #0D2B5E; color: #fff; font-weight: 600; }
+
+  /* Dawn grid + filters on this page */
+  body:has(#zgCH-{{ section.id }}) .facets-vertical { gap: 2rem; padding-top: 1.6rem; align-items: flex-start; }
+  body:has(#zgCH-{{ section.id }}) .facets-wrapper { background: #fff; border-radius: 12px; padding: 1.6rem 2rem; }
+  body:has(#zgCH-{{ section.id }}) .product-grid-container { background: #fff; border-radius: 12px; padding: 2rem; flex: 1 1 auto; min-width: 0; }
+  body:has(#zgCH-{{ section.id }}) .facets-vertical .product-grid-container { padding-top: 2rem; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card-wrapper { height: 100%; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card { box-shadow: none; border: 1px solid #E3E6EA; transition: box-shadow 0.2s, border-color 0.2s; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card:hover { box-shadow: 0 6px 18px rgba(13,43,94,0.12); border-color: #D5DAE1; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card__inner { background: #F7F8FA; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card__heading { font-size: 1.45rem; font-weight: 400; line-height: 1.35; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .card__heading a { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .price { font-size: 1.7rem; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .price-item--sale,
+  body:has(#zgCH-{{ section.id }}) #product-grid .price__regular .price-item--regular { font-weight: 700; color: #0F1111; }
+  body:has(#zgCH-{{ section.id }}) #product-grid .quick-add__submit {
+    --color-button: 196,154,58; --color-button-text: 10,31,68; --buttons-radius: 2rem; --buttons-radius-outset: 2rem;
+    border-radius: 2rem; min-height: 3.6rem; font-weight: 600;
+  }
+  body:has(#zgCH-{{ section.id }}) .pagination-wrapper { padding-bottom: 2rem; }
+  @media screen and (max-width: 749px) {
+    #zgCH-{{ section.id }} { padding: 1rem 1rem 0; }
+    #zgCH-{{ section.id }} .zgCH__banner { padding: 2rem; min-height: 0; }
+    #zgCH-{{ section.id }} .zgCH__media { width: 72px; height: 72px; border-radius: 12px; }
+    #zgCH-{{ section.id }} .zgCH__desc { font-size: 1.4rem; }
+    body:has(#zgCH-{{ section.id }}) .product-grid-container { padding: 1rem; border-radius: 8px; }
+  }
+{%- endstyle -%}
+
+<div id="zgCH-{{ section.id }}" class="zgCH">
+  <div class="zgCH__banner">
+    <div class="zgCH__copy">
+      <ol class="zgCH__crumbs">
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><a href="{{ routes.collections_url }}">Shop</a></li>
+        <li aria-current="page">{{ collection.title | escape }}</li>
+      </ol>
+      <h1 class="zgCH__title">{{ collection.title | escape }}</h1>
+      {%- if count > 0 -%}
+        <span class="zgCH__count">{{ count }} {% if count == 1 %}product{% else %}products{% endif %}</span>
+      {%- endif -%}
+      {%- if section.settings.show_description and desc != blank -%}
+        <p class="zgCH__desc">{{ desc | truncate: 240 }}</p>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.show_image and collection.image != blank -%}
+      <div class="zgCH__media">
+        {{ collection.image | image_url: width: 300 | image_tag: loading: 'eager', alt: collection.title }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <nav class="zgCH__chips" aria-label="More collections">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign c = block.settings.collection
+          if c == blank and block.settings.handle != blank
+            assign c = collections[block.settings.handle]
+          endif
+          assign chip_label = block.settings.label
+          if chip_label == blank and c != blank
+            assign chip_label = c.title
+          endif
+        -%}
+        {%- if c != blank and chip_label != blank -%}
+          <a class="zgCH__chip{% if c.handle == collection.handle %} is-active{% endif %}" href="{{ c.url }}" {{ block.shopify_attributes }}>{{ chip_label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "ZGlobal collection header",
+  "class": "section",
+  "enabled_on": { "templates": ["collection"] },
+  "settings": [
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "checkbox", "id": "show_image", "label": "Show collection image", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "chip",
+      "name": "Quick link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "handle", "label": "Collection handle (fallback)" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "ZGlobal collection header" } ]
+}
+{% endschema %}

@@ -3,18 +3,34 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "brand": {
+          "type": "custom_liquid",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "custom_liquid": "{%- if product.vendor != blank -%}<a class=\"zg-brandlink\" href=\"{{ product.vendor | url_for_vendor }}\">Visit the {{ product.vendor }} store</a>{%- endif -%}"
           }
         },
         "title": {
           "type": "title"
         },
+        "rating": {
+          "type": "rating"
+        },
         "price": {
           "type": "price"
+        },
+        "savings": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{%- if product.variants.size == 1 and product.compare_at_price > product.price -%}{%- assign zg_save = product.compare_at_price | minus: product.price -%}{%- assign zg_pct = zg_save | times: 100 | divided_by: product.compare_at_price | floor -%}<p class=\"zg-save\"><b>-{{ zg_pct }}%</b> You save {{ zg_save | money }}</p>{%- endif -%}"
+          }
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "body",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": false
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -33,8 +49,44 @@
             "show_gift_card_recipient": true
           }
         },
+        "trust_icons": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "truck",
+            "heading_1": "Shipping across the EU",
+            "icon_2": "return",
+            "heading_2": "14-day returns",
+            "icon_3": "lock",
+            "heading_3": "Secure checkout"
+          }
+        },
         "description": {
           "type": "description"
+        },
+        "tab_shipping": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & delivery",
+            "icon": "truck",
+            "content": "<p>Orders ship from the EU with tracking. Delivery times and costs are shown at checkout before you pay.</p>"
+          }
+        },
+        "tab_returns": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Returns",
+            "icon": "return",
+            "content": "<p>Changed your mind? Return unused items within 14 days of delivery under the EU right of withdrawal. <a href=\"/policies/refund-policy\" title=\"Refund policy\">Read the return policy</a>.</p>"
+          }
+        },
+        "tab_payment": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Secure payment",
+            "icon": "lock",
+            "content": "<p>Payments are processed by Shopify Checkout over an encrypted connection. The available payment methods are shown at checkout.</p>"
+          }
         },
         "share": {
           "type": "share",
@@ -44,29 +96,36 @@
         }
       },
       "block_order": [
-        "vendor",
+        "brand",
         "title",
+        "rating",
         "price",
+        "savings",
+        "inventory",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "trust_icons",
         "description",
+        "tab_shipping",
+        "tab_returns",
+        "tab_payment",
         "share"
       ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "media_position": "left",
-        "gallery_layout": "stacked",
+        "gallery_layout": "thumbnail_slider",
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
+        "mobile_thumbnails": "show",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "padding_top": 16,
+        "padding_bottom": 24
       }
     },
     "disclosures": {
@@ -79,25 +138,98 @@
     "related-products": {
       "type": "related-products",
       "settings": {
-        "heading": "You may also like",
+        "heading": "Related products",
         "heading_size": "h2",
-        "products_to_show": 4,
+        "products_to_show": 8,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
-        "show_vendor": false,
+        "show_vendor": true,
         "show_rating": false,
         "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "product_top": {
+      "type": "zg-product-top",
+      "settings": {}
+    },
+    "brand_row": {
+      "type": "zg-product-row",
+      "settings": {
+        "from_vendor": true,
+        "products_to_show": 12,
+        "columns_desktop": 5,
+        "deals_only": false,
+        "show_vendor": false,
+        "show_more": true,
+        "more_label": "See all",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "trust": {
+      "type": "zg-trust-bar",
+      "settings": {
+        "padding_top": 12,
+        "padding_bottom": 24
+      },
+      "blocks": {
+        "t1": {
+          "type": "point",
+          "settings": {
+            "icon": "truck",
+            "title": "Shipping across the EU",
+            "text": "Tracked delivery to your door"
+          }
+        },
+        "t2": {
+          "type": "point",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Payments processed by Shopify"
+          }
+        },
+        "t3": {
+          "type": "point",
+          "settings": {
+            "icon": "return",
+            "title": "14-day returns",
+            "text": "EU right of withdrawal"
+          }
+        },
+        "t4": {
+          "type": "point",
+          "settings": {
+            "icon": "badge",
+            "title": "Genuine brands",
+            "text": "Sourced from official brand partners"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    },
+    "sticky_atc": {
+      "type": "zg-sticky-atc",
+      "settings": {}
     }
   },
   "order": [
+    "product_top",
     "main",
     "disclosures",
-    "related-products"
+    "brand_row",
+    "related-products",
+    "trust",
+    "sticky_atc"
   ]
 }

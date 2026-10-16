@@ -1,0 +1,66 @@
+{%- comment -%}
+  Product page top: breadcrumb trail + marketplace styling for Dawn's
+  main-product section (bordered buy box, large price, gold add to cart).
+{%- endcomment -%}
+
+{%- liquid
+  assign crumb_collection = collection
+  if crumb_collection == blank
+    assign crumb_collection = product.collections.first
+  endif
+-%}
+
+{%- style -%}
+  #zgPT-{{ section.id }} { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; padding: 1.4rem 5rem 0; }
+  #zgPT-{{ section.id }} .zgPT__crumbs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0; padding: 0; list-style: none; font-size: 1.3rem; color: #565959; }
+  #zgPT-{{ section.id }} .zgPT__crumbs a { color: #1A5FB4; text-decoration: none; }
+  #zgPT-{{ section.id }} .zgPT__crumbs a:hover { color: #C45500; text-decoration: underline; }
+  #zgPT-{{ section.id }} .zgPT__crumbs li + li::before { content: "›"; margin-right: 0.6rem; color: #8A9099; }
+  #zgPT-{{ section.id }} .zgPT__crumbs li:last-child { max-width: 40ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  body:has(#zgPT-{{ section.id }}) .product__info-container { border: 1px solid #D5DAE1; border-radius: 12px; padding: 2.4rem 2.4rem 1.6rem; background: #fff; }
+  body:has(#zgPT-{{ section.id }}) .product__info-container > * + * { margin-top: 1.4rem; }
+  body:has(#zgPT-{{ section.id }}) .product__title h1 { font-size: clamp(2.2rem, 2.1vw, 2.9rem); line-height: 1.25; letter-spacing: 0; }
+  body:has(#zgPT-{{ section.id }}) .product .price .price-item--sale,
+  body:has(#zgPT-{{ section.id }}) .product .price__regular .price-item--regular { font-size: 2.8rem; font-weight: 700; color: #0F1111; letter-spacing: 0; }
+  body:has(#zgPT-{{ section.id }}) .product .price__sale s.price-item--regular { font-size: 1.5rem; color: #565959; font-weight: 400; }
+  body:has(#zgPT-{{ section.id }}) .product .price .badge { background: #CC0C39; color: #fff; border-color: #CC0C39; }
+  body:has(#zgPT-{{ section.id }}) .product-form__submit {
+    --color-button: 196,154,58; --color-button-text: 10,31,68; --alpha-button-background: 1;
+    --buttons-radius: 2.4rem; --buttons-radius-outset: 2.4rem; border-radius: 2.4rem; min-height: 4.8rem; font-weight: 700; font-size: 1.6rem;
+  }
+  body:has(#zgPT-{{ section.id }}) .product-form__submit:not([disabled]):hover { --color-button: 217,178,86; }
+  body:has(#zgPT-{{ section.id }}) .shopify-payment-button__button--unbranded { background: #0D2B5E; color: #fff; border-radius: 2.4rem; min-height: 4.8rem; font-weight: 700; font-size: 1.6rem; }
+  body:has(#zgPT-{{ section.id }}) .shopify-payment-button__button--unbranded:hover:not([disabled]) { background: #0A1F44; }
+  body:has(#zgPT-{{ section.id }}) .product__media-item .media, body:has(#zgPT-{{ section.id }}) .thumbnail { border-radius: 10px; background: #F7F8FA; }
+  body:has(#zgPT-{{ section.id }}) .icon-with-text { border-top: 1px solid #E3E6EA; border-bottom: 1px solid #E3E6EA; padding: 1.4rem 0; }
+  body:has(#zgPT-{{ section.id }}) .icon-with-text .h4 { font-size: 1.3rem; }
+  body:has(#zgPT-{{ section.id }}) .zg-brandlink { font-size: 1.4rem; color: #1A5FB4; text-decoration: none; }
+  body:has(#zgPT-{{ section.id }}) .zg-brandlink:hover { color: #C45500; text-decoration: underline; }
+  body:has(#zgPT-{{ section.id }}) .zg-save { display: inline-flex; align-items: center; gap: 0.8rem; font-size: 1.5rem; color: #CC0C39; font-weight: 600; }
+  body:has(#zgPT-{{ section.id }}) .zg-save b { background: #CC0C39; color: #fff; padding: 0.2rem 0.7rem; border-radius: 3px; }
+  @media screen and (max-width: 989px) {
+    #zgPT-{{ section.id }} { padding: 1rem 1.6rem 0; }
+    body:has(#zgPT-{{ section.id }}) .product__info-container { padding: 1.8rem 1.6rem 1.2rem; }
+  }
+{%- endstyle -%}
+
+<nav id="zgPT-{{ section.id }}" class="zgPT" aria-label="Breadcrumb">
+  <ol class="zgPT__crumbs">
+    <li><a href="{{ routes.root_url }}">Home</a></li>
+    {%- if crumb_collection != blank -%}
+      <li><a href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a></li>
+    {%- endif -%}
+    <li aria-current="page">{{ product.title | escape }}</li>
+  </ol>
+</nav>
+
+{% schema %}
+{
+  "name": "ZGlobal product top",
+  "class": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [],
+  "presets": [ { "name": "ZGlobal product top" } ]
+}
+{% endschema %}

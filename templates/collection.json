@@ -1,36 +1,159 @@
 {
   "sections": {
-    "banner": {
-      "type": "main-collection-banner",
-      "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
-      }
-    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
-        "products_per_page": 16,
+        "products_per_page": 24,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": false,
         "show_vendor": true,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_rating": true,
+        "quick_add": "standard",
         "enable_filtering": true,
         "filter_type": "vertical",
         "enable_sorting": true,
         "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 0,
+        "padding_bottom": 24
       }
+    },
+    "zg_header": {
+      "type": "zg-collection-hero",
+      "settings": {
+        "show_description": true,
+        "show_image": true
+      },
+      "blocks": {
+        "chip_beauty": {
+          "type": "chip",
+          "settings": {
+            "label": "Beauty & Cosmetics",
+            "collection": "beauty",
+            "handle": "beauty"
+          }
+        },
+        "chip_sport": {
+          "type": "chip",
+          "settings": {
+            "label": "Sport & Outdoor",
+            "collection": "sport",
+            "handle": "sport"
+          }
+        },
+        "chip_home": {
+          "type": "chip",
+          "settings": {
+            "label": "Home & Living",
+            "collection": "home",
+            "handle": "home"
+          }
+        },
+        "chip_sheglam": {
+          "type": "chip",
+          "settings": {
+            "label": "SHEGLAM",
+            "collection": "sheglam",
+            "handle": "sheglam"
+          }
+        },
+        "chip_om": {
+          "type": "chip",
+          "settings": {
+            "label": "OutdoorMaster",
+            "collection": "outdoormaster",
+            "handle": "outdoormaster"
+          }
+        },
+        "chip_vh": {
+          "type": "chip",
+          "settings": {
+            "label": "Vakume Home",
+            "collection": "vakumehome",
+            "handle": "vakumehome"
+          }
+        },
+        "chip_rk": {
+          "type": "chip",
+          "settings": {
+            "label": "RedKey",
+            "collection": "redkey",
+            "handle": "redkey"
+          }
+        },
+        "chip_all": {
+          "type": "chip",
+          "settings": {
+            "label": "All products",
+            "collection": "all",
+            "handle": "all"
+          }
+        }
+      },
+      "block_order": [
+        "chip_beauty",
+        "chip_sport",
+        "chip_home",
+        "chip_sheglam",
+        "chip_om",
+        "chip_vh",
+        "chip_rk",
+        "chip_all"
+      ]
+    },
+    "trust": {
+      "type": "zg-trust-bar",
+      "settings": {
+        "padding_top": 12,
+        "padding_bottom": 24
+      },
+      "blocks": {
+        "t1": {
+          "type": "point",
+          "settings": {
+            "icon": "truck",
+            "title": "Shipping across the EU",
+            "text": "Tracked delivery to your door"
+          }
+        },
+        "t2": {
+          "type": "point",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure checkout",
+            "text": "Payments processed by Shopify"
+          }
+        },
+        "t3": {
+          "type": "point",
+          "settings": {
+            "icon": "return",
+            "title": "14-day returns",
+            "text": "EU right of withdrawal"
+          }
+        },
+        "t4": {
+          "type": "point",
+          "settings": {
+            "icon": "badge",
+            "title": "Genuine brands",
+            "text": "Sourced from official brand partners"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
     }
   },
   "order": [
-    "banner",
-    "product-grid"
+    "zg_header",
+    "product-grid",
+    "trust"
   ]
 }

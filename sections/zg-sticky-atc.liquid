@@ -1,0 +1,81 @@
+{%- comment -%}
+  Sticky add-to-cart bar for product pages. Appears once the main buy
+  button scrolls out of view; its button clicks Dawn's own add-to-cart, so
+  the selected variant, quantity and cart drawer all work as normal.
+{%- endcomment -%}
+
+{%- style -%}
+  #zgSA-{{ section.id }} {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; background: #fff; box-shadow: 0 -6px 20px rgba(0,0,0,0.12);
+    transform: translateY(110%); transition: transform 0.25s ease; border-top: 1px solid #E3E6EA;
+  }
+  #zgSA-{{ section.id }}.is-visible { transform: none; }
+  #zgSA-{{ section.id }} .zgSA__inner { max-width: {{ settings.page_width | default: 1400 }}px; margin: 0 auto; padding: 1rem 2rem; display: flex; align-items: center; gap: 1.4rem; }
+  #zgSA-{{ section.id }} .zgSA__img { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 8px; background: #F7F8FA; overflow: hidden; display: flex; }
+  #zgSA-{{ section.id }} .zgSA__img img { width: 100%; height: 100%; object-fit: contain; }
+  #zgSA-{{ section.id }} .zgSA__info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+  #zgSA-{{ section.id }} .zgSA__title { font-size: 1.4rem; color: #0F1111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #zgSA-{{ section.id }} .zgSA__price { font-size: 1.7rem; font-weight: 700; color: #0F1111; }
+  #zgSA-{{ section.id }} .zgSA__btn { flex: 0 0 auto; border: 0; cursor: pointer; background: #C49A3A; color: #0A1F44; font-weight: 700; font-size: 1.5rem; padding: 1.2rem 2.8rem; border-radius: 2.4rem; font-family: inherit; }
+  #zgSA-{{ section.id }} .zgSA__btn:hover:not([disabled]) { background: #D9B256; }
+  #zgSA-{{ section.id }} .zgSA__btn[disabled] { background: #D5DAE1; color: #565959; cursor: not-allowed; }
+  @media screen and (max-width: 749px) {
+    #zgSA-{{ section.id }} .zgSA__inner { padding: 0.8rem 1.2rem; gap: 1rem; }
+    #zgSA-{{ section.id }} .zgSA__btn { padding: 1.1rem 1.8rem; font-size: 1.4rem; }
+  }
+{%- endstyle -%}
+
+<div id="zgSA-{{ section.id }}" class="zgSA" aria-hidden="true">
+  <div class="zgSA__inner">
+    {%- if product.featured_media -%}
+      <span class="zgSA__img">{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}</span>
+    {%- endif -%}
+    <div class="zgSA__info">
+      <span class="zgSA__title">{{ product.title | escape }}</span>
+      <span class="zgSA__price" data-zg-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+    </div>
+    <button type="button" class="zgSA__btn" data-zg-atc tabindex="-1">{{ 'products.product.add_to_cart' | t }}</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var bar = document.getElementById('zgSA-{{ section.id }}');
+    var main = document.querySelector('product-form .product-form__submit');
+    if (!bar || !main) { if (bar) bar.remove(); return; }
+    var btn = bar.querySelector('[data-zg-atc]'), price = bar.querySelector('[data-zg-price]');
+    var sync = function () {
+      var p = document.querySelector('[id^="price-"] .price');
+      if (p) {
+        var el = p.classList.contains('price--on-sale') ? p.querySelector('.price__sale .price-item--sale') : p.querySelector('.price__regular .price-item--regular');
+        if (el && el.textContent.trim()) price.textContent = el.textContent.trim();
+      }
+      var label = main.querySelector('span');
+      btn.textContent = (label ? label.textContent : main.textContent).trim();
+      btn.disabled = main.disabled;
+    };
+    var show = function (on) {
+      bar.classList.toggle('is-visible', on);
+      bar.setAttribute('aria-hidden', on ? 'false' : 'true');
+      btn.tabIndex = on ? 0 : -1;
+    };
+    new IntersectionObserver(function (entries) {
+      var e = entries[0];
+      show(!e.isIntersecting && e.boundingClientRect.top < 0);
+    }).observe(main);
+    var info = document.querySelector('.product__info-container');
+    if (info) new MutationObserver(sync).observe(info, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ['disabled'] });
+    btn.addEventListener('click', function () { if (!main.disabled) main.click(); });
+    sync();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "ZGlobal sticky cart",
+  "class": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [],
+  "presets": [ { "name": "ZGlobal sticky cart" } ]
+}
+{% endschema %}

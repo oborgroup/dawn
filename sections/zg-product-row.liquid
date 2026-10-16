@@ -16,6 +16,20 @@
   if c == blank and section.settings.handle != blank
     assign c = collections[section.settings.handle]
   endif
+  assign page_product = product
+  assign vendor_title = ''
+  if section.settings.from_vendor and page_product != blank
+    assign vh = page_product.vendor | handleize
+    assign vc = collections[vh]
+    if vc == blank or vc.products_count == 0
+      assign vh2 = vh | remove: '-'
+      assign vc = collections[vh2]
+    endif
+    if vc != blank and vc.products_count > 0
+      assign c = vc
+      assign vendor_title = 'More from ' | append: page_product.vendor
+    endif
+  endif
   if c == blank
     assign c = collections.all
   endif
@@ -23,9 +37,12 @@
   assign deals_only = section.settings.deals_only
 
   assign eligible = 0
-  for product in c.products limit: 50
+  for item in c.products limit: 50
+    if page_product != blank and item.id == page_product.id
+      continue
+    endif
     if deals_only
-      if product.compare_at_price > product.price
+      if item.compare_at_price > item.price
         assign eligible = eligible | plus: 1
       endif
     else
@@ -34,6 +51,9 @@
   endfor
 
   assign row_title = section.settings.title
+  if row_title == blank and vendor_title != blank
+    assign row_title = vendor_title
+  endif
   if row_title == blank
     assign row_title = c.title
   endif
@@ -103,11 +123,12 @@
       <button type="button" class="zgR__arrow zgR__arrow--prev" data-zg-scroll="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
       <ul class="zgR__track" data-zg-track role="list">
         {%- assign rendered = 0 -%}
-        {%- for product in c.products limit: 50 -%}
+        {%- for item in c.products limit: 50 -%}
+          {%- if page_product != blank and item.id == page_product.id -%}{%- continue -%}{%- endif -%}
           {%- if rendered >= max_items -%}{%- break -%}{%- endif -%}
           {%- liquid
             assign on_sale = false
-            if product.compare_at_price > product.price
+            if item.compare_at_price > item.price
               assign on_sale = true
             endif
           -%}
@@ -115,11 +136,11 @@
             {%- assign rendered = rendered | plus: 1 -%}
             <li class="zgR__item{% if on_sale %} zgR__item--sale{% endif %}">
               {%- if on_sale -%}
-                {%- assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | floor -%}
+                {%- assign pct = item.compare_at_price | minus: item.price | times: 100 | divided_by: item.compare_at_price | floor -%}
                 {%- if pct > 0 -%}<span class="zgR__off">-{{ pct }}%</span>{%- endif -%}
               {%- endif -%}
               {% render 'card-product',
-                card_product: product,
+                card_product: item,
                 media_aspect_ratio: 'square',
                 show_secondary_image: false,
                 show_vendor: section.settings.show_vendor,
@@ -176,6 +197,7 @@
     { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the collection title." },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "text", "id": "handle", "label": "Collection handle (fallback)", "info": "Used if no collection is picked. Empty = all products." },
+    { "type": "checkbox", "id": "from_vendor", "label": "Use the product's brand (product pages)", "info": "Shows other products from the same brand. Leave the title empty for 'More from <brand>'.", "default": false },
     { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 4, "max": 24, "step": 1, "default": 12 },
     { "type": "range", "id": "columns_desktop", "label": "Visible per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 5 },
     { "type": "checkbox", "id": "deals_only", "label": "Deals only (discounted products)", "info": "Shows only products with a compare-at price. The row hides itself if there are none.", "default": false },
